@@ -203,6 +203,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer, GLTextureView.R
                     oldFilter.destroy();
                 }
                 GPUImageRenderer.this.filter.ifNeedInit();
+                GPUImageRenderer.this.filter.setBackgroundColor(backgroundRed, backgroundGreen, backgroundBlue);
                 GLES20.glUseProgram(GPUImageRenderer.this.filter.getProgram());
                 GPUImageRenderer.this.filter.onOutputSizeChanged(outputWidth, outputHeight);
             }
@@ -237,7 +238,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer, GLTextureView.R
             public void run() {
                 Bitmap resizedBitmap = null;
                 if (bitmap.getWidth() % 2 == 1) {
-                    resizedBitmap = Bitmap.createBitmap(bitmap.getWidth() + 1, bitmap.getHeight(),
+                    resizedBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
                             Bitmap.Config.ARGB_8888);
                     resizedBitmap.setDensity(bitmap.getDensity());
                     Canvas can = new Canvas(resizedBitmap);

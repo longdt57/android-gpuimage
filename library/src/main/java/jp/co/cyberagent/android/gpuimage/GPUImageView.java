@@ -17,6 +17,7 @@
 package jp.co.cyberagent.android.gpuimage;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -71,16 +72,23 @@ public class GPUImageView extends FrameLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        gpuImage = new GPUImage(context);
         if (attrs != null) {
             TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.GPUImageView, 0, 0);
             try {
                 surfaceType = a.getInt(R.styleable.GPUImageView_gpuimage_surface_type, surfaceType);
                 isShowLoading = a.getBoolean(R.styleable.GPUImageView_gpuimage_show_loading, isShowLoading);
+                int scaleType = a.getInt(R.styleable.GPUImageView_gpuimage_scaleType, 1); // Default center Inside
+                setScaleType(scaleType);
+
+                ColorStateList backgroundColor = a.getColorStateList(R.styleable.GPUImageView_gpuimage_backgroundColor);
+                if (backgroundColor != null) {
+                    setGPUImageBackgroundColor(backgroundColor.getDefaultColor());
+                }
             } finally {
                 a.recycle();
             }
         }
-        gpuImage = new GPUImage(context);
         if (surfaceType == SURFACE_TYPE_TEXTURE_VIEW) {
             surfaceView = new GPUImageGLTextureView(context, attrs);
             gpuImage.setGLTextureView((GLTextureView) surfaceView);
@@ -176,6 +184,13 @@ public class GPUImageView extends FrameLayout {
         gpuImage.setBackgroundColor(red, green, blue);
     }
 
+    public void setGPUImageBackgroundColor(int color) {
+        float red = ((float) Color.red(color)) / 255;
+        float green = ((float) Color.green(color)) / 255;
+        float blue = ((float) Color.blue(color)) / 255;
+        setBackgroundColor(red, green, blue);
+    }
+
     /**
      * Set the rendering mode. When renderMode is
      * RENDERMODE_CONTINUOUSLY, the renderer is called
@@ -210,6 +225,11 @@ public class GPUImageView extends FrameLayout {
      * @param scaleType the new ScaleType
      */
     public void setScaleType(GPUImage.ScaleType scaleType) {
+        gpuImage.setScaleType(scaleType);
+    }
+
+    private void setScaleType(int type) {
+        GPUImage.ScaleType scaleType = type == 1 ? GPUImage.ScaleType.CENTER_INSIDE : GPUImage.ScaleType.CENTER_CROP;
         gpuImage.setScaleType(scaleType);
     }
 

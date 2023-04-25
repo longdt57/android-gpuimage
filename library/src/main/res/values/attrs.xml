@@ -5,6 +5,11 @@
             <enum name="surface_view" value="0" />
             <enum name="texture_view" value="1" />
         </attr>
-        <attr name="gpuimage_show_loading" format="boolean"/>
+        <attr name="gpuimage_show_loading" format="boolean" />
+        <attr name="gpuimage_backgroundColor" format="reference|color" />
+        <attr name="gpuimage_scaleType" format="enum">
+            <enum name="centerInside" value="1" />
+            <enum name="centerCrop" value="2" />
+        </attr>
     </declare-styleable>
 </resources>

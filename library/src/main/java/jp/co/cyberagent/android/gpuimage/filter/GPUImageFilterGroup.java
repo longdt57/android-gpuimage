@@ -196,12 +196,12 @@ public class GPUImageFilterGroup extends GPUImageFilter {
                 boolean isNotLast = i < size - 1;
                 if (isNotLast) {
                     GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffers[i]);
-                    GLES20.glClearColor(0, 0, 0, 0);
+                    drawBackground();
                 }
 
-                if (i == 0) {
+                if (i == size - 1) {
                     filter.onDraw(previousTexture, cubeBuffer, textureBuffer);
-                } else if (i == size - 1) {
+                } else if (i == 0) {
                     filter.onDraw(previousTexture, glCubeBuffer, (size % 2 == 0) ? glTextureFlipBuffer : glTextureBuffer);
                 } else {
                     filter.onDraw(previousTexture, glCubeBuffer, glTextureBuffer);

@@ -60,6 +60,10 @@ public class GPUImageFilter {
     private int outputHeight;
     private boolean isInitialized;
 
+    private float mBackgroundRed;
+    private float mBackgroundGreen;
+    private float mBackgroundBlue;
+
     public GPUImageFilter() {
         this(NO_FILTER_VERTEX_SHADER, NO_FILTER_FRAGMENT_SHADER);
     }
@@ -170,6 +174,12 @@ public class GPUImageFilter {
         return glUniformTexture;
     }
 
+    public void setBackgroundColor(float red, float green, float blue) {
+        mBackgroundRed = red;
+        mBackgroundGreen = green;
+        mBackgroundBlue = blue;
+    }
+
     protected void setInteger(final int location, final int intValue) {
         runOnDraw(new Runnable() {
             @Override
@@ -269,6 +279,10 @@ public class GPUImageFilter {
         synchronized (runOnDraw) {
             runOnDraw.addLast(runnable);
         }
+    }
+
+    protected void drawBackground() {
+        GLES20.glClearColor(mBackgroundRed, mBackgroundGreen, mBackgroundBlue, 1);
     }
 
     public static String loadShader(String file, Context context) {
