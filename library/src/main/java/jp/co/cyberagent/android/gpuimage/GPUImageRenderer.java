@@ -203,6 +203,7 @@ public class GPUImageRenderer implements GLSurfaceView.Renderer, GLTextureView.R
                     oldFilter.destroy();
                 }
                 GPUImageRenderer.this.filter.ifNeedInit();
+                GPUImageRenderer.this.filter.setBackgroundColor(backgroundRed, backgroundGreen, backgroundBlue);
                 GLES20.glUseProgram(GPUImageRenderer.this.filter.getProgram());
                 GPUImageRenderer.this.filter.onOutputSizeChanged(outputWidth, outputHeight);
             }
